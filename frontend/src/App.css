@@ -4,6 +4,10 @@
     font-weight: 100 900;
 }
 
+/** ===============================
+                TOKENS
+    =============================== **/
+
 :root {
     --color-text-light: #FAF9F6; /* Off-white */
     --color-text-dark: #28282B; /* Matte Black */
@@ -29,13 +33,14 @@
 }
 
 /** ===============================
-        DROPZONE
+            DROPZONE
     =============================== **/
 
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 36px 0;
 }
 
 #dropzone {
@@ -92,7 +97,7 @@ main {
 }
 
 /** ===============================
-            HEADER
+                HEADER
     =============================== **/
     
 header {
