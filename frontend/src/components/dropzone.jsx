@@ -16,13 +16,13 @@ export default function Dropzone() {
                     <div id="dropzone__area">
                         <img id="uploadIcon" src={uploadIcon} alt="Upload icon" />
                         <p>Drag & drop to upload</p>
-                        <input id="uploadFileBtn" className="invisible" type="file" />
+                        <input id="uploadFileBtn" className="invisible" type="file" accept="video/*" />
                         <label id="uploadFileLabel" htmlFor="uploadFileBtn">Choose File</label>
                     </div>
                 </label>
                 <footer id="dropzone__btnGroup">
                     <button id="replace-file-btn" type="button" onClick={handleReplaceFileClick}>Replace File</button>
-                    <input ref={replaceFileInputRef} className="invisible" type="file" />
+                    <input ref={replaceFileInputRef} className="invisible" type="file" accept="video/*" />
                     <button id="upload-analyze-btn" type="submit">Upload & Analyze</button>
                 </footer>
             </div>

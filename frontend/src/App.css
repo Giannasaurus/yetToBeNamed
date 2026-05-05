@@ -33,10 +33,10 @@
     --box-radius: 24px;
     
     --btn-padding-md: 12px 24px;
-    --box-padding-md: 32px;
+    --box-padding-md: 52px 32px;
     
     --btn-group-gap: 0 8px;
-    --dropzone-gap: 12px 0;
+    --dropzone-gap: 18px 0;
 }
 
 * {
@@ -75,20 +75,36 @@ main {
 }
 
 #dropzone__clickable {
+    width: 100%;
     cursor: pointer;
 }
 
 #dropzone__area {
+    background-color: var(--color-accent-3-soft);
     border-radius: var(--box-radius);
-    border-style: dashed;
     border-width: 4px;
+    border-style: dashed;
+    border-color: var(--color-accent-3);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: var(--dropzone-gap);
-    width: 100%;
     padding: var(--box-padding-md);
+    transition: 0.2s;
+}
+
+#dropzone__area:hover {
+    border-color: var(--color-accent-3-strong);
+}
+
+#dropzone__area img {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(8%) saturate(487%) hue-rotate(201deg) brightness(99%) contrast(87%);
+}
+
+#dropzone__area p {
+    color: var(--color-text-dark);
+    font-weight: 900;
 }
 
 #uploadIcon {
@@ -108,6 +124,7 @@ main {
     border-radius: var(--btn-radius);
     display: inline-block;
     padding: var(--btn-padding-md);
+    transition: 0.2s;
 }
 
 #uploadFileLabel:hover {
@@ -132,6 +149,7 @@ main {
     font-weight: var(--font-weight-btn-text);
     border-radius: var(--btn-radius);
     padding: var(--btn-padding-md);
+    transition: 0.2s;
 }
 
 #replace-file-btn {
