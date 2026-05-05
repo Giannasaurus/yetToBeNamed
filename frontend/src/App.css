@@ -11,14 +11,28 @@
 :root {
     --color-text-light: #FAF9F6; /* Off-white */
     --color-text-dark: #28282B; /* Matte Black */
+    --color-bg-light: #FAF9F6; /* Off-white */
+    --color-bg-dark: #28282B; /* Matte Black */
     --color-accent-1: #FF9B22; /* Quantum Orange */
     --color-accent-2: #5F8FF5; /* Quantum Blue */
     --color-accent-3: #8b5cf6; /* Quantum Purple */
+    --color-accent-1-soft: #fff1dc; /* Soft Quantum Orange */
+    --color-accent-1-strong: #e57912; /* Strong Quantum Orange */
+    --color-accent-2-soft: #e8f1ff; /* Soft Quantum Blue */
+    --color-accent-2-strong: #416ee8; /* Strong Quantum Blue */
+    --color-accent-3-soft: #f1ebff; /* Soft Quantum Purple */
+    --color-accent-3-strong: #6d28d9; /* Strong Quantum Purple */
     
     --font-size-sm: 1.05rem;
     --font-size-md: 1.075rem;
     --font-size-lg: 1rem;
     
+    --font-weight-btn-text: 600;
+    
+    --btn-radius: 12px;
+    --box-radius: 24px;
+    
+    --btn-padding-md: 12px 24px;
     --box-padding-md: 32px;
     
     --btn-group-gap: 0 8px;
@@ -32,15 +46,24 @@
     margin: 0;
 }
 
+html, body {
+    background-color: var(--color-bg-light);
+}
+
 /** ===============================
             DROPZONE
     =============================== **/
+    
+button:hover {
+    cursor: pointer;
+}
 
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 36px 0;
+    width: 100%;
+    margin: 36px auto;
 }
 
 #dropzone {
@@ -48,7 +71,7 @@ main {
     flex-direction: column;
     align-items: center;
     gap: var(--dropzone-gap);
-    width: 50%;
+    width: 75%;
 }
 
 #dropzone__area {
@@ -57,7 +80,7 @@ main {
 }
 
 #dropzone__area {
-    border-radius: 10px;
+    border-radius: var(--box-radius);
     border-style: dashed;
     border-width: 4px;
     display: flex;
@@ -79,10 +102,23 @@ main {
 }
 
 #uploadFileLabel {
-    background-color: black;
-    color: #fff;
+    background-color: var(--color-accent-3);
+    color: var(--color-text-light);
+    font-weight: var(--font-weight-btn-text);
+    border: 3px solid var(--color-accent-3);
+    border-radius: var(--btn-radius);
     display: inline-block;
-    cursor: pointer;
+    padding: var(--btn-padding-md);
+}
+
+#uploadFileLabel:hover {
+    background-color: var(--color-accent-3-strong);
+    border: 3px solid var(--color-accent-3-strong);
+}
+
+#uploadFileLabel:active {
+    background-color: var(--color-accent-3);
+    border: 3px solid var(--color-accent-3);
 }
 
 #dropzone__btnGroup {
@@ -90,6 +126,47 @@ main {
     justify-content: flex-end;
     gap: var(--btn-group-gap);
     width: 100%;
+}
+
+#dropzone__btnGroup button {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-btn-text);
+    border-radius: var(--btn-radius);
+    padding: var(--btn-padding-md);
+}
+
+#replace-file-btn {
+    background: none;
+    color: var(--color-accent-3);
+    border: 3px solid var(--color-accent-3);
+}
+
+#replace-file-btn:hover {
+    color: var(--color-accent-3);
+    background-color: var(--color-accent-3-soft);
+}
+
+#replace-file-btn:active {
+    color: var(--color-text-light);
+    background-color: var(--color-accent-3);
+}
+
+#upload-analyze-btn {
+    background-color: var(--color-accent-3);
+    color: var(--color-text-light); 
+    border: 3px solid var(--color-accent-3);
+}
+
+#upload-analyze-btn:hover {
+    background-color: var(--color-accent-3-strong);
+    color: var(--color-text-light);
+    border: 3px solid var(--color-accent-3-strong);
+}
+
+#upload-analyze-btn:active {
+    background-color: var(--color-accent-3);
+    color: var(--color-text-light);
+    border: 3px solid var(--color-accent-3);
 }
 
 .invisible {
@@ -101,6 +178,7 @@ main {
     =============================== **/
     
 header {
+    color: var(--color-text-light);
     background-color: var(--color-accent-3);
     padding: 24px 36px;
 }

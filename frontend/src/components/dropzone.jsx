@@ -19,9 +19,9 @@ export default function Dropzone() {
                     <label id="uploadFileLabel" htmlFor="uploadFileBtn">Choose File</label>
                 </div>
                 <footer id="dropzone__btnGroup">
-                    <button className="replace-file-btn" type="button" onClick={handleReplaceFileClick}>Replace File</button>
+                    <button id="replace-file-btn" type="button" onClick={handleReplaceFileClick}>Replace File</button>
                     <input ref={replaceFileInputRef} className="invisible" type="file" />
-                    <button className="upload-analyze-btn" type="submit">Upload & Analyze</button>
+                    <button id="upload-analyze-btn" type="submit">Upload & Analyze</button>
                 </footer>
             </div>
         </main>
