@@ -78,7 +78,7 @@
     --mass-input-width: 140px;
     --video-preview-width: min(100%, 960px);
     --video-preview-max-height: 60vh;
-    --chart-height: 300px;
+    --chart-height: 240px;
     --chart-axis-width: 2;
     --chart-line-width: 2.5;
     --chart-fit-dasharray: 8 7;
@@ -400,6 +400,7 @@ main {
 
 .analysis-charts {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-sm);
     width: 100%;
 }
