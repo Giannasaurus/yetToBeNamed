@@ -28,6 +28,7 @@
     --color-chart-fit: #FF9B22;
     --color-chart-energy: #8b5cf6;
     --color-chart-phase: #28282B;
+    --color-summary-bg: #fff1dc;
     
     --font-size-xs: 0.9rem;
     --font-size-sm: 1.05rem;
@@ -319,6 +320,27 @@ main {
     font-weight: var(--font-weight-heavy);
 }
 
+.analysis-summary {
+    background-color: var(--color-summary-bg);
+    border: var(--border-width-sm) solid var(--color-accent-1);
+}
+
+.analysis-summary p {
+    margin-bottom: var(--space-xs);
+}
+
+.analysis-summary ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xs) var(--space-sm);
+    margin-top: var(--space-sm);
+    list-style: none;
+}
+
+.analysis-summary li {
+    font-size: var(--font-size-result-body);
+}
+
 .analysis-charts {
     display: grid;
     gap: var(--space-sm);
@@ -408,4 +430,11 @@ main {
 
 .chart-dot {
     fill: var(--color-chart-primary);
+}
+
+@media (max-width: 900px) {
+    .analysis-summary ul,
+    .analysis-charts {
+        grid-template-columns: 1fr;
+    }
 }

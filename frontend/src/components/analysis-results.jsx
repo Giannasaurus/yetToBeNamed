@@ -1,4 +1,5 @@
 import AnalysisCharts from "./analysis-charts.jsx";
+import AnalysisSummary from "./analysis-summary.jsx";
 
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(value)) {
@@ -60,6 +61,7 @@ export default function AnalysisResults({ analysis }) {
 
   return (
     <section className="analysis-results" aria-live="polite">
+      <AnalysisSummary physics={physics} />
       {sections.map(([title, rows]) => (
         <ResultSection key={title} title={title} rows={rows} />
       ))}
