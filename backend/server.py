@@ -2,10 +2,11 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from cv_tracker import analyze_video
+from physics_analysis import analyze_physics
 
 
 app = FastAPI(title="PhysiVision CV API")
@@ -28,7 +29,7 @@ def health():
 
 
 @app.post("/api/analyze")
-def analyze(file: UploadFile = File(...)):
+def analyze(file: UploadFile = File(...), mass: float = Form(...)):
     suffix = Path(file.filename or "upload.mp4").suffix or ".mp4"
 
     with tempfile.TemporaryDirectory(prefix="physivision-") as temp_dir:
@@ -40,6 +41,7 @@ def analyze(file: UploadFile = File(...)):
 
         try:
             result = analyze_video(video_path, output_dir=temp_path)
+            physics = analyze_physics(result["centers"], result["fps"], mass)
         except Exception as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
@@ -48,4 +50,5 @@ def analyze(file: UploadFile = File(...)):
             "fps": result["fps"],
             "dt": result["dt"],
             "centers": result["centers"],
+            "physics": physics,
         }
