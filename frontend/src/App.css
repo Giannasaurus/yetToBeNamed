@@ -45,8 +45,7 @@
     
     --font-weight-regular: 400;
     --font-weight-bold: 700;
-    --font-weight-heavy: var(--font-weight-bold);
-    --font-weight-black: var(--font-weight-bold);
+    --font-weight-medium: 500;
     --font-weight-btn-text: var(--font-weight-bold);
     --font-weight-project-name: 900;
     
@@ -129,7 +128,7 @@ header h1 {
 .hero-kicker {
     color: var(--color-accent-1-strong);
     font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-heavy);
+    font-weight: var(--font-weight-bold);
     text-transform: uppercase;
 }
 
@@ -137,7 +136,7 @@ header h1 {
     max-width: var(--hero-description-width);
     margin-top: var(--space-sm);
     font-size: var(--font-size-md);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-regular);
     line-height: var(--result-line-height);
 }
 
@@ -154,7 +153,7 @@ header h1 {
     border-radius: var(--btn-radius);
     color: var(--color-accent-3-strong);
     font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
     padding: var(--input-padding-md);
 }
 
@@ -218,7 +217,7 @@ main {
 
 #dropzone__area p {
     color: var(--color-text-dark);
-    font-weight: var(--font-weight-black);
+    font-weight: var(--font-weight-regular);
 }
 
 #uploadIcon {
@@ -266,7 +265,7 @@ main {
 }
 
 .analysis-controls label {
-    font-weight: var(--font-weight-heavy);
+    font-weight: var(--font-weight-bold);
 }
 
 .analysis-controls input {
@@ -375,7 +374,7 @@ main {
 }
 
 .analysis-results span {
-    font-weight: var(--font-weight-heavy);
+    font-weight: var(--font-weight-bold);
 }
 
 .analysis-summary {
