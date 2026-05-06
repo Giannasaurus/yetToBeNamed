@@ -5,6 +5,38 @@ import cv2
 import numpy as np
 
 
+class TemplateTracker:
+    def init(self, frame, bbox):
+        self.bbox = tuple(map(int, bbox))
+        x, y, w, h = self.bbox
+        self.template = cv2.cvtColor(frame[y : y + h, x : x + w], cv2.COLOR_BGR2GRAY)
+        if self.template.size == 0:
+            raise RuntimeError("Initial tracking box is empty.")
+        return True
+
+    def update(self, frame):
+        x, y, w, h = self.bbox
+        margin = 100
+        x1 = max(0, x - margin)
+        y1 = max(0, y - margin)
+        x2 = min(frame.shape[1], x + w + margin)
+        y2 = min(frame.shape[0], y + h + margin)
+
+        search = cv2.cvtColor(frame[y1:y2, x1:x2], cv2.COLOR_BGR2GRAY)
+        if search.shape[0] < h or search.shape[1] < w:
+            return False, self.bbox
+
+        result = cv2.matchTemplate(search, self.template, cv2.TM_CCOEFF_NORMED)
+        _, max_value, _, max_location = cv2.minMaxLoc(result)
+        if max_value < 0.35:
+            return False, self.bbox
+
+        next_x = x1 + max_location[0]
+        next_y = y1 + max_location[1]
+        self.bbox = (next_x, next_y, w, h)
+        return True, self.bbox
+
+
 def create_tracker():
     if hasattr(cv2, "legacy") and hasattr(cv2.legacy, "TrackerCSRT_create"):
         return cv2.legacy.TrackerCSRT_create()
@@ -14,7 +46,7 @@ def create_tracker():
         return cv2.legacy.TrackerKCF_create()
     if hasattr(cv2, "TrackerKCF_create"):
         return cv2.TrackerKCF_create()
-    raise RuntimeError("No tracker available. Install opencv-contrib-python.")
+    return TemplateTracker()
 
 
 def _auto_bbox(frame):
