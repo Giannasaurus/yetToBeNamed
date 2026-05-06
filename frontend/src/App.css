@@ -22,6 +22,10 @@
     --color-accent-2-strong: #416ee8; /* Strong Quantum Blue */
     --color-accent-3-soft: #f1ebff; /* Soft Quantum Purple */
     --color-accent-3-strong: #6d28d9; /* Strong Quantum Purple */
+    --color-surface: #ffffff;
+    --color-border: #e5e7eb;
+    --color-header-bg: #ffffff;
+    --color-header-border: #ece7f6;
     --color-error: #b42318;
     
     --font-size-xs: 0.9rem;
@@ -68,6 +72,7 @@
     --transition-fast: 0.2s;
     --disabled-opacity: 0.65;
     --result-line-height: 1.7;
+    --shadow-soft: 0 14px 40px rgba(40, 40, 43, 0.08);
 }
 
 * {
@@ -79,6 +84,7 @@
 
 html, body {
     background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
 }
 
 /** ===============================
@@ -86,13 +92,14 @@ html, body {
     =============================== **/
 
 header {
-    color: var(--color-text-light);
-    background-color: var(--color-accent-3);
+    color: var(--color-text-dark);
+    background-color: var(--color-header-bg);
+    border-bottom: var(--border-width-sm) solid var(--color-header-border);
     padding: var(--header-padding);
 }
 
 header h1 {
-    color: var(--color-text-light);
+    color: var(--color-text-dark);
 }
 
 /** ===============================
@@ -117,6 +124,11 @@ main {
     align-items: center;
     gap: var(--dropzone-gap);
     width: var(--dropzone-width);
+    background-color: var(--color-surface);
+    border: var(--border-width-sm) solid var(--color-border);
+    border-radius: var(--box-radius);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-soft);
 }
 
 #dropzone__clickable {
@@ -125,11 +137,11 @@ main {
 }
 
 #dropzone__area {
-    background-color: var(--color-accent-3-soft);
+    background-color: var(--color-accent-2-soft);
     border-radius: var(--box-radius);
     border-width: var(--border-width-lg);
     border-style: dashed;
-    border-color: var(--color-accent-3);
+    border-color: var(--color-accent-2);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -140,7 +152,7 @@ main {
 }
 
 #dropzone__area:hover {
-    border-color: var(--color-accent-3-strong);
+    border-color: var(--color-accent-2-strong);
 }
 
 #dropzone__area img {
@@ -162,10 +174,10 @@ main {
 }
 
 #uploadFileLabel {
-    background-color: var(--color-accent-3);
+    background-color: var(--color-accent-2);
     color: var(--color-text-light);
     font-weight: var(--font-weight-btn-text);
-    border: var(--border-width-md) solid var(--color-accent-3);
+    border: var(--border-width-md) solid var(--color-accent-2);
     border-radius: var(--btn-radius);
     display: inline-block;
     padding: var(--btn-padding-md);
@@ -173,13 +185,13 @@ main {
 }
 
 #uploadFileLabel:hover {
-    background-color: var(--color-accent-3-strong);
-    border: var(--border-width-md) solid var(--color-accent-3-strong);
+    background-color: var(--color-accent-2-strong);
+    border: var(--border-width-md) solid var(--color-accent-2-strong);
 }
 
 #uploadFileLabel:active {
-    background-color: var(--color-accent-3);
-    border: var(--border-width-md) solid var(--color-accent-3);
+    background-color: var(--color-accent-2);
+    border: var(--border-width-md) solid var(--color-accent-2);
 }
 
 #dropzone__btnGroup {
@@ -202,7 +214,7 @@ main {
 
 .analysis-controls input {
     width: var(--mass-input-width);
-    border: var(--border-width-sm) solid var(--color-accent-3);
+    border: var(--border-width-sm) solid var(--color-accent-2);
     border-radius: var(--radius-sm);
     padding: var(--input-padding-md);
     font-size: var(--font-size-lg);
@@ -223,36 +235,36 @@ main {
 
 #replace-file-btn {
     background: none;
-    color: var(--color-accent-3);
-    border: var(--border-width-md) solid var(--color-accent-3);
+    color: var(--color-accent-2-strong);
+    border: var(--border-width-md) solid var(--color-accent-2);
 }
 
 #replace-file-btn:hover {
-    color: var(--color-accent-3);
-    background-color: var(--color-accent-3-soft);
+    color: var(--color-accent-2-strong);
+    background-color: var(--color-accent-2-soft);
 }
 
 #replace-file-btn:active {
     color: var(--color-text-light);
-    background-color: var(--color-accent-3);
+    background-color: var(--color-accent-2);
 }
 
 #upload-analyze-btn {
-    background-color: var(--color-accent-3);
+    background-color: var(--color-accent-1);
     color: var(--color-text-light); 
-    border: var(--border-width-md) solid var(--color-accent-3);
+    border: var(--border-width-md) solid var(--color-accent-1);
 }
 
 #upload-analyze-btn:hover {
-    background-color: var(--color-accent-3-strong);
+    background-color: var(--color-accent-1-strong);
     color: var(--color-text-light);
-    border: var(--border-width-md) solid var(--color-accent-3-strong);
+    border: var(--border-width-md) solid var(--color-accent-1-strong);
 }
 
 #upload-analyze-btn:active {
-    background-color: var(--color-accent-3);
+    background-color: var(--color-accent-1);
     color: var(--color-text-light);
-    border: var(--border-width-md) solid var(--color-accent-3);
+    border: var(--border-width-md) solid var(--color-accent-1);
 }
 
 .invisible {
@@ -286,7 +298,7 @@ main {
 }
 
 .analysis-results section {
-    border: var(--border-width-sm) solid var(--color-accent-3-soft);
+    border: var(--border-width-sm) solid var(--color-border);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
     margin-bottom: var(--space-sm);
@@ -294,7 +306,7 @@ main {
 
 .analysis-results h3 {
     margin-bottom: var(--space-xs);
-    color: var(--color-accent-3-strong);
+    color: var(--color-accent-2-strong);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     text-transform: uppercase;
