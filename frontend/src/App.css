@@ -23,12 +23,18 @@
     --color-accent-3-soft: #f1ebff; /* Soft Quantum Purple */
     --color-accent-3-strong: #6d28d9; /* Strong Quantum Purple */
     --color-error: #b42318;
+    --color-chart-grid: #e8e3f4;
+    --color-chart-primary: #5F8FF5;
+    --color-chart-fit: #FF9B22;
+    --color-chart-energy: #8b5cf6;
+    --color-chart-phase: #28282B;
     
     --font-size-xs: 0.9rem;
     --font-size-sm: 1.05rem;
     --font-size-md: 1.075rem;
     --font-size-lg: 1rem;
     --font-size-result-body: 1rem;
+    --font-size-chart-label: 0.82rem;
     
     --font-weight-bold: 700;
     --font-weight-heavy: 800;
@@ -64,6 +70,10 @@
     --mass-input-width: 140px;
     --video-preview-width: min(100%, 960px);
     --video-preview-max-height: 60vh;
+    --chart-height: 300px;
+    --chart-axis-width: 2;
+    --chart-line-width: 2.5;
+    --chart-fit-dasharray: 8 7;
 
     --transition-fast: 0.2s;
     --disabled-opacity: 0.65;
@@ -307,4 +317,95 @@ main {
 
 .analysis-results span {
     font-weight: var(--font-weight-heavy);
+}
+
+.analysis-charts {
+    display: grid;
+    gap: var(--space-sm);
+    width: 100%;
+}
+
+.analysis-chart {
+    border: var(--border-width-sm) solid var(--color-accent-3-soft);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.chart-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+}
+
+.chart-legend-mark {
+    width: var(--space-sm);
+    height: var(--space-sm);
+    border-radius: var(--space-sm);
+}
+
+.chart-legend-mark.chart-line--primary {
+    background-color: var(--color-chart-primary);
+}
+
+.chart-legend-mark.chart-line--fit {
+    background-color: var(--color-chart-fit);
+}
+
+.chart-legend-mark.chart-line--energy {
+    background-color: var(--color-chart-energy);
+}
+
+.analysis-chart svg {
+    display: block;
+    width: 100%;
+    height: var(--chart-height);
+}
+
+.chart-axis {
+    stroke: var(--color-chart-grid);
+    stroke-width: var(--chart-axis-width);
+}
+
+.chart-label {
+    fill: var(--color-text-dark);
+    font-size: var(--font-size-chart-label);
+    font-weight: var(--font-weight-bold);
+}
+
+.chart-line {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: var(--chart-line-width);
+}
+
+.chart-line--primary {
+    stroke: var(--color-chart-primary);
+}
+
+.chart-line--fit {
+    stroke: var(--color-chart-fit);
+    stroke-dasharray: var(--chart-fit-dasharray);
+}
+
+.chart-line--energy {
+    stroke: var(--color-chart-energy);
+}
+
+.chart-line--phase {
+    stroke: var(--color-chart-phase);
+}
+
+.chart-dot {
+    fill: var(--color-chart-primary);
 }

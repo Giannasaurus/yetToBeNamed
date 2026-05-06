@@ -1,3 +1,5 @@
+import AnalysisCharts from "./analysis-charts.jsx";
+
 function formatNumber(value) {
   if (value === null || value === undefined || Number.isNaN(value)) {
     return "N/A";
@@ -61,6 +63,7 @@ export default function AnalysisResults({ analysis }) {
       {sections.map(([title, rows]) => (
         <ResultSection key={title} title={title} rows={rows} />
       ))}
+      <AnalysisCharts series={physics.series} />
     </section>
   );
 }
