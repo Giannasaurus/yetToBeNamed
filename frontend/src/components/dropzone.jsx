@@ -21,7 +21,9 @@ export default function Dropzone() {
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const replaceFileInputRef = useRef(null);
+  const dragDepthRef = useRef(0);
   const parsedMass = Number(mass);
   const massInKg = parsedMass * MASS_TO_KG[massUnit];
   const hasVideo = Boolean(videoUrl);
@@ -51,6 +53,51 @@ export default function Dropzone() {
   function handleVideoSelect(event) {
     selectVideo(event.target.files[0]);
     event.target.value = "";
+  }
+
+  function isFileDrag(event) {
+    return Array.from(event.dataTransfer.types).includes("Files");
+  }
+
+  function handleDropzoneDragEnter(event) {
+    if (!isFileDrag(event)) {
+      return;
+    }
+
+    event.preventDefault();
+    dragDepthRef.current += 1;
+    setIsDragging(true);
+  }
+
+  function handleDropzoneDragOver(event) {
+    if (!isFileDrag(event)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  function handleDropzoneDragLeave(event) {
+    if (!isFileDrag(event)) {
+      return;
+    }
+
+    dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
+    if (dragDepthRef.current === 0) {
+      setIsDragging(false);
+    }
+  }
+
+  function handleDropzoneDrop(event) {
+    if (!isFileDrag(event)) {
+      return;
+    }
+
+    event.preventDefault();
+    dragDepthRef.current = 0;
+    setIsDragging(false);
+    selectVideo(event.dataTransfer.files[0]);
   }
 
   async function handleAnalyze() {
@@ -95,14 +142,24 @@ export default function Dropzone() {
 
   return (
     <main>
-      <div id="dropzone">
+      <div
+        id="dropzone"
+        className={isDragging ? "dropzone--dragging" : ""}
+        onDragEnter={handleDropzoneDragEnter}
+        onDragLeave={handleDropzoneDragLeave}
+        onDragOver={handleDropzoneDragOver}
+        onDrop={handleDropzoneDrop}
+      >
         {hasVideo && <VideoPreview videoUrl={videoUrl} />}
 
         {!hasVideo && (
           <EmptyUploadPrompt
-            onVideoDrop={selectVideo}
             onVideoSelect={handleVideoSelect}
           />
+        )}
+
+        {hasVideo && isDragging && (
+          <p className="dropzone-replace-hint">Drop to replace the current video</p>
         )}
 
         {hasVideo && (

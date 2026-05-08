@@ -186,6 +186,7 @@ main {
         var(--color-surface);
     border-radius: var(--box-radius);
     padding: var(--space-xl);
+    transition: var(--transition-fast);
 }
 
 #dropzone__clickable {
@@ -212,9 +213,25 @@ main {
     border-color: var(--color-accent-3-strong);
 }
 
-#dropzone__clickable.dropzone__clickable--dragging #dropzone__area {
+#dropzone.dropzone--dragging {
+    background:
+        radial-gradient(circle at top left, var(--color-accent-2-soft), transparent 32%),
+        radial-gradient(circle at bottom right, var(--color-accent-3-soft), transparent 34%),
+        var(--color-surface);
+    outline: var(--border-width-md) dashed var(--color-accent-2);
+    outline-offset: var(--space-xs);
+}
+
+#dropzone.dropzone--dragging #dropzone__area {
     background-color: var(--color-accent-2-soft);
     border-color: var(--color-accent-2);
+}
+
+.dropzone-replace-hint {
+    width: 100%;
+    color: var(--color-accent-2-strong);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
 }
 
 #dropzone__area img {

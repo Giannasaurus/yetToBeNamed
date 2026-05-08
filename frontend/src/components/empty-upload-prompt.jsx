@@ -1,8 +1,7 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import uploadIcon from "../assets/icons/upload.svg";
 
-export default function EmptyUploadPrompt({ onVideoDrop, onVideoSelect }) {
-  const [isDragging, setIsDragging] = useState(false);
+export default function EmptyUploadPrompt({ onVideoSelect }) {
   const fileInputRef = useRef(null);
 
   function openFilePicker() {
@@ -16,31 +15,12 @@ export default function EmptyUploadPrompt({ onVideoDrop, onVideoSelect }) {
     }
   }
 
-  function handleDragOver(event) {
-    event.preventDefault();
-    setIsDragging(true);
-  }
-
-  function handleDragLeave(event) {
-    setIsDragging(false);
-  }
-
-  function handleDrop(event) {
-    event.preventDefault();
-    setIsDragging(false);
-    onVideoDrop(event.dataTransfer.files[0]);
-  }
-
   return (
     <div
       id="dropzone__clickable"
-      className={isDragging ? "dropzone__clickable--dragging" : ""}
       role="button"
       tabIndex="0"
       onClick={openFilePicker}
-      onDragLeave={handleDragLeave}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
       onKeyDown={handleUploadPromptKeyDown}
     >
       <div id="dropzone__area">
