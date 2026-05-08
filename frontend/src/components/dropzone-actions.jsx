@@ -29,6 +29,7 @@ export default function DropzoneActions({
         onClick={onAnalyze}
         disabled={isAnalyzeDisabled}
       >
+        {isAnalyzing && <span className="button-spinner" aria-hidden="true" />}
         {isAnalyzing ? "Analyzing..." : "Upload & Analyze"}
       </button>
     </footer>

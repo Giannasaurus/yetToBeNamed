@@ -273,6 +273,26 @@ main {
     border: var(--border-width-md) solid var(--color-accent-3);
 }
 
+#sample-video-btn {
+    background-color: var(--color-surface);
+    color: var(--color-accent-2-strong);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-btn-text);
+    border: var(--border-width-md) solid var(--color-accent-2);
+    border-radius: var(--btn-radius);
+    padding: var(--btn-padding-md);
+    transition: var(--transition-fast);
+}
+
+#sample-video-btn:hover {
+    background-color: var(--color-accent-2-soft);
+}
+
+#sample-video-btn:disabled {
+    cursor: wait;
+    opacity: var(--disabled-opacity);
+}
+
 #dropzone__btnGroup {
     display: flex;
     justify-content: flex-end;
@@ -311,6 +331,10 @@ main {
 }
 
 #dropzone__btnGroup button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-btn-text);
     border-radius: var(--btn-radius);
@@ -355,6 +379,60 @@ main {
     background-color: var(--color-accent-3);
     color: var(--color-text-light);
     border: var(--border-width-md) solid var(--color-accent-3);
+}
+
+.button-spinner,
+.analysis-spinner {
+    border-radius: 999px;
+    border-style: solid;
+    animation: spin 0.8s linear infinite;
+}
+
+.button-spinner {
+    width: 18px;
+    height: 18px;
+    border-width: 3px;
+    border-color: rgba(250, 249, 246, 0.45);
+    border-top-color: var(--color-text-light);
+}
+
+.analysis-loading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    background-color: var(--color-accent-2-soft);
+    border: var(--border-width-sm) solid var(--color-accent-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-dark);
+    padding: var(--space-md);
+}
+
+.analysis-spinner {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border-width: var(--border-width-md);
+    border-color: rgba(95, 143, 245, 0.25);
+    border-top-color: var(--color-accent-2);
+}
+
+.analysis-loading p {
+    color: var(--color-accent-2-strong);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 4px;
+}
+
+.analysis-loading span {
+    display: block;
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .invisible {

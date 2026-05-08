@@ -7,6 +7,8 @@ import VideoPreview from "./video-preview.jsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 const ANALYSIS_TIMEOUT_MS = 90000;
+const SAMPLE_VIDEO_PATH = "/actualspring.mp4";
+const SAMPLE_MASS_KG = ".1888";
 const MASS_TO_KG = {
   kg: 1,
   g: 0.001,
@@ -22,6 +24,7 @@ export default function Dropzone() {
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isLoadingSample, setIsLoadingSample] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const replaceFileInputRef = useRef(null);
   const dragDepthRef = useRef(0);
@@ -54,6 +57,31 @@ export default function Dropzone() {
   function handleVideoSelect(event) {
     selectVideo(event.target.files[0]);
     event.target.value = "";
+  }
+
+  async function handleSampleSelect() {
+    setIsLoadingSample(true);
+    setError("");
+
+    try {
+      const response = await fetch(SAMPLE_VIDEO_PATH);
+      if (!response.ok) {
+        throw new Error("Sample video failed to load.");
+      }
+
+      const blob = await response.blob();
+      const sampleVideo = new File([blob], "actualspring.mp4", {
+        type: blob.type || "video/mp4",
+      });
+
+      selectVideo(sampleVideo);
+      setMass(SAMPLE_MASS_KG);
+      setMassUnit("kg");
+    } catch (err) {
+      setError(err.message || "Sample video failed to load.");
+    } finally {
+      setIsLoadingSample(false);
+    }
   }
 
   function isFileDrag(event) {
@@ -163,8 +191,20 @@ export default function Dropzone() {
 
         {!hasVideo && (
           <EmptyUploadPrompt
+            isLoadingSample={isLoadingSample}
+            onSampleSelect={handleSampleSelect}
             onVideoSelect={handleVideoSelect}
           />
+        )}
+
+        {isAnalyzing && (
+          <div className="analysis-loading" role="status" aria-live="polite">
+            <span className="analysis-spinner" aria-hidden="true" />
+            <div>
+              <p>Analyzing motion video...</p>
+              <span>Tracking the object, fitting the oscillator model, and preparing charts.</span>
+            </div>
+          </div>
         )}
 
         {hasVideo && isDragging && (

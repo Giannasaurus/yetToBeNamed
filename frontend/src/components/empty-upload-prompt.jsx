@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import uploadIcon from "../assets/icons/upload.svg";
 
-export default function EmptyUploadPrompt({ onVideoSelect }) {
+export default function EmptyUploadPrompt({ isLoadingSample, onSampleSelect, onVideoSelect }) {
   const fileInputRef = useRef(null);
 
   function openFilePicker() {
@@ -13,6 +13,11 @@ export default function EmptyUploadPrompt({ onVideoSelect }) {
       event.preventDefault();
       openFilePicker();
     }
+  }
+
+  function handleSampleClick(event) {
+    event.stopPropagation();
+    onSampleSelect();
   }
 
   return (
@@ -37,6 +42,14 @@ export default function EmptyUploadPrompt({ onVideoSelect }) {
         <span id="uploadFileLabel">
           Choose File
         </span>
+        <button
+          id="sample-video-btn"
+          type="button"
+          onClick={handleSampleClick}
+          disabled={isLoadingSample}
+        >
+          {isLoadingSample ? "Loading sample..." : "Use Sample Video"}
+        </button>
       </div>
     </div>
   );
