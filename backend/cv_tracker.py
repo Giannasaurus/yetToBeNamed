@@ -16,6 +16,52 @@ def _resize_frame(frame, max_dimension):
     return resized, scale
 
 
+def _red_marker_center(frame):
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    lower_red_1 = np.array([0, 80, 70])
+    upper_red_1 = np.array([12, 255, 255])
+    lower_red_2 = np.array([168, 80, 70])
+    upper_red_2 = np.array([180, 255, 255])
+    mask = cv2.bitwise_or(
+        cv2.inRange(hsv, lower_red_1, upper_red_1),
+        cv2.inRange(hsv, lower_red_2, upper_red_2),
+    )
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    candidates = []
+
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area < 8:
+            continue
+        moments = cv2.moments(contour)
+        if moments["m00"] == 0:
+            continue
+        candidates.append((area, moments["m10"] / moments["m00"], moments["m01"] / moments["m00"]))
+
+    if not candidates:
+        return None
+
+    _, cx, cy = max(candidates, key=lambda item: item[0])
+    return float(cx), float(cy)
+
+
+def _write_tracking_outputs(output_dir, centers, fps):
+    csv_path = output_dir / "tracking.csv"
+    npy_path = output_dir / "centers.npy"
+    dt_path = output_dir / "dt.npy"
+
+    with csv_path.open("w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["x", "y"])
+        writer.writerows(centers)
+
+    np.save(npy_path, centers)
+    np.save(dt_path, 1 / fps)
+
+    return csv_path, npy_path, dt_path
+
+
 class TemplateTracker:
     def init(self, frame, bbox):
         self.bbox = tuple(map(int, bbox))
@@ -89,6 +135,63 @@ def _auto_bbox(frame):
     return (x, y, w, h)
 
 
+def _analyze_red_marker(video_path, output_dir, max_frames, max_dimension, frame_stride):
+    cap = cv2.VideoCapture(str(video_path))
+    if not cap.isOpened():
+        raise RuntimeError("Video failed to open.")
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    if fps <= 0:
+        fps = 30
+
+    centers = []
+    read_frames = 0
+    processed_frames = 0
+    smooth_cx, smooth_cy = None, None
+    alpha = 0.35
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        read_frames += 1
+        if read_frames % frame_stride != 0:
+            continue
+        if processed_frames >= max_frames:
+            break
+
+        frame, _ = _resize_frame(frame, max_dimension)
+        processed_frames += 1
+        center = _red_marker_center(frame)
+        if center is None:
+            continue
+
+        cx, cy = center
+        if smooth_cx is None:
+            smooth_cx, smooth_cy = cx, cy
+        else:
+            smooth_cx = alpha * cx + (1 - alpha) * smooth_cx
+            smooth_cy = alpha * cy + (1 - alpha) * smooth_cy
+
+        centers.append((float(smooth_cx), float(smooth_cy)))
+
+    cap.release()
+
+    if len(centers) < 10:
+        raise RuntimeError("Could not track enough red marker samples.")
+
+    csv_path, npy_path, dt_path = _write_tracking_outputs(output_dir, centers, fps / frame_stride)
+
+    return {
+        "centers": [{"x": x, "y": y} for x, y in centers],
+        "csv": str(csv_path),
+        "npy": str(npy_path),
+        "dt": frame_stride / fps,
+        "fps": fps / frame_stride,
+        "samples": len(centers),
+    }
+
+
 def analyze_video(
     video_path,
     bbox=None,
@@ -101,6 +204,11 @@ def analyze_video(
     video_path = Path(video_path)
     output_dir = Path(output_dir or video_path.parent)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        return _analyze_red_marker(video_path, output_dir, max_frames, max_dimension, frame_stride)
+    except RuntimeError:
+        pass
 
     cap = cv2.VideoCapture(str(video_path))
     if not cap.isOpened():
@@ -197,17 +305,7 @@ def analyze_video(
 
     cap.release()
 
-    csv_path = output_dir / "tracking.csv"
-    npy_path = output_dir / "centers.npy"
-    dt_path = output_dir / "dt.npy"
-
-    with csv_path.open("w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["x", "y"])
-        writer.writerows(centers)
-
-    np.save(npy_path, centers)
-    np.save(dt_path, 1 / fps)
+    csv_path, npy_path, dt_path = _write_tracking_outputs(output_dir, centers, fps / frame_stride)
 
     return {
         "centers": [{"x": x, "y": y} for x, y in centers],
