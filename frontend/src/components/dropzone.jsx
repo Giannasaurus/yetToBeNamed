@@ -31,16 +31,26 @@ export default function Dropzone() {
     replaceFileInputRef.current.click();
   }
 
-  function handleVideoSelect(event) {
-    const video = event.target.files[0];
-
-    if (video) {
-      const url = URL.createObjectURL(video);
-      setSelectedVideo(video);
-      setVideoUrl(url);
-      setAnalysis(null);
-      setError("");
+  function selectVideo(video) {
+    if (!video) {
+      return;
     }
+
+    if (!video.type.startsWith("video/")) {
+      setError("Please upload a video file.");
+      return;
+    }
+
+    const url = URL.createObjectURL(video);
+    setSelectedVideo(video);
+    setVideoUrl(url);
+    setAnalysis(null);
+    setError("");
+  }
+
+  function handleVideoSelect(event) {
+    selectVideo(event.target.files[0]);
+    event.target.value = "";
   }
 
   async function handleAnalyze() {
@@ -88,7 +98,12 @@ export default function Dropzone() {
       <div id="dropzone">
         {hasVideo && <VideoPreview videoUrl={videoUrl} />}
 
-        {!hasVideo && <EmptyUploadPrompt onVideoSelect={handleVideoSelect} />}
+        {!hasVideo && (
+          <EmptyUploadPrompt
+            onVideoDrop={selectVideo}
+            onVideoSelect={handleVideoSelect}
+          />
+        )}
 
         {hasVideo && (
           <AnalysisControls
